@@ -1,5 +1,6 @@
 package com.tejastomar.journalapp.entity;
 
+import com.tejastomar.journalapp.enums.Sentiment;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -21,5 +22,6 @@ public class JournalEntry {
     private String title;
     private String content;
     private LocalDateTime date;
+    private Sentiment sentiment;
 
 }
