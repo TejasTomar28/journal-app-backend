@@ -14,7 +14,7 @@ public class SentimentConsumerService {
     @KafkaListener(topics = "weekly-sentiments", groupId = "weekly-sentiment-group")
     public void consume(SentimentData sentimentData) {
         sendEmail(sentimentData);
-    }
+    }//this method continously search for data nad as soon as it finds data, it calls sendEmail method.
 
     private void sendEmail(SentimentData sentimentData) {
         emailService.sendEmail(sentimentData.getEmail(), "Weekly Sentiment Analysis", sentimentData.getSentiment());
