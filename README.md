@@ -1,4 +1,4 @@
-# Journal App 🚀
+# Journal App 📖
 
 A production-oriented backend application built using **Spring Boot** that enables users to maintain personal journals, analyze emotional sentiment from journal entries, and receive automated weekly sentiment reports via email.
 
