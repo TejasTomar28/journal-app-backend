@@ -4,6 +4,8 @@ import com.tejastomar.journalapp.entity.JournalEntry;
 import com.tejastomar.journalapp.entity.User;
 import com.tejastomar.journalapp.services.JournalEntryService;
 import com.tejastomar.journalapp.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/journal")//puri class pe mapping kar dega
+@Tag(name="Journal APIs")
 public class JournalEntryController {
 
     @Autowired
@@ -26,6 +29,11 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
+
+    @Operation(
+            summary = "Get All Journal Entries",
+            description = "Fetches all journal entries belonging to the authenticated user."
+    )
     @GetMapping
     public ResponseEntity<?> getAllJournalEntriesOfUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -38,6 +46,11 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+    @Operation(
+            summary = "Create Journal Entry",
+            description = "Creates a new journal entry for the authenticated user."
+    )
     @PostMapping
     public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry){ //requestbody ka kaam hai data(from body) ko object mei convert karna
        try{
@@ -51,14 +64,20 @@ public class JournalEntryController {
        }
     }
 
+
+    @Operation(
+            summary = "Get Journal Entry By ID",
+            description = "Retrieves a specific journal entry using its unique identifier."
+    )
     @GetMapping("id/{myId}")
-    public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable ObjectId myId){
+    public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable String myId){
+        ObjectId id = new ObjectId(myId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user=userService.findByUserName(username);
-        List<JournalEntry> collect=user.getJournalEntries().stream().filter(entry->entry.getId().equals(myId)).collect(Collectors.toList());
+        List<JournalEntry> collect=user.getJournalEntries().stream().filter(entry->entry.getId().equals(id)).collect(Collectors.toList());
         if(!collect.isEmpty()) {
-            Optional<JournalEntry> journalEntry = journalEntryService.findById(myId);
+            Optional<JournalEntry> journalEntry = journalEntryService.findById(id);
             if(journalEntry.isPresent()){
                 return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
             }
@@ -66,6 +85,11 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+    @Operation(
+            summary = "Delete Journal Entry",
+            description = "Deletes a journal entry belonging to the authenticated user."
+    )
     @DeleteMapping("id/{myId}")
     public ResponseEntity<? > deleteJournalEntryById(@PathVariable ObjectId myId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,6 +102,11 @@ public class JournalEntryController {
         }
     }
 
+
+    @Operation(
+            summary = "Update Journal Entry",
+            description = "Updates title and content of an existing journal entry."
+    )
     @PutMapping("id/{myId}")
     public ResponseEntity<JournalEntry> updateJournalById(@PathVariable ObjectId myId, @RequestBody JournalEntry newEntry) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
