@@ -18,8 +18,9 @@ public class SwaggerConfig {
     public OpenAPI myCustomConfig(){
         return new OpenAPI()
                 .info(
-                        new Info().title("Journal App APIs")
-                                .description("By TEJAS TOMAR")
+                        new Info()
+                                .title("Dimaag Ka Darpan APIs")
+                                .description("Personal Reflection & Sentiment Analysis Platform-By TEJAS TOMAR")
                 )
                 .servers(Arrays.asList(
                         new Server()
