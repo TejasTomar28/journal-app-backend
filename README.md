@@ -338,7 +338,7 @@ http://localhost:8080/api/swagger-ui/index.html
 
 ## Swagger API Documentation
 
-*<img width="1028" height="1158" alt="image" src="https://github.com/user-attachments/assets/e205623d-4203-4c04-8945-b6fb3f080569" />*
+*<img width="962" height="1154" alt="image" src="https://github.com/user-attachments/assets/1ce7c8db-e8b6-48ec-9516-36cb51a7e6da" />*
 
 ## MongoDB Atlas Database
 
