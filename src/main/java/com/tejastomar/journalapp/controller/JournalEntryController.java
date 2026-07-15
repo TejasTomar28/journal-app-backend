@@ -3,17 +3,22 @@ package com.tejastomar.journalapp.controller;
 import com.tejastomar.journalapp.entity.JournalEntry;
 import com.tejastomar.journalapp.entity.User;
 import com.tejastomar.journalapp.services.JournalEntryService;
+import com.tejastomar.journalapp.services.JournalSearchService;
 import com.tejastomar.journalapp.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import com.tejastomar.journalapp.enums.Sentiment;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +34,8 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JournalSearchService journalSearchService;
 
     @Operation(
             summary = "Get All Journal Entries",
@@ -44,6 +51,30 @@ public class JournalEntryController {
             return new ResponseEntity<>(all,HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @Operation(
+            summary = "Search and Filter Journal Entries",
+            description = "Searches the authenticated user's journal titles and optionally filters by sentiment and inclusive date range. Sort defaults to desc."
+    )
+    @GetMapping("/search")
+    public ResponseEntity<List<JournalEntry>> searchJournalEntries(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Sentiment sentiment,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(defaultValue = "desc") String sort) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        try {
+            List<JournalEntry> entries = journalSearchService.searchJournalEntries(
+                    authentication.getName(), title, sentiment, startDate, endDate, sort
+            );
+            return ResponseEntity.ok(entries);
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
