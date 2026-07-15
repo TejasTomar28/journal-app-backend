@@ -5,6 +5,7 @@ import com.tejastomar.journalapp.entity.User;
 import com.tejastomar.journalapp.services.JournalEntryService;
 import com.tejastomar.journalapp.services.JournalSearchService;
 import com.tejastomar.journalapp.services.UserService;
+import com.tejastomar.journalapp.utils.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.types.ObjectId;
@@ -12,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.tejastomar.journalapp.enums.Sentiment;
@@ -43,8 +42,7 @@ public class JournalEntryController {
     )
     @GetMapping
     public ResponseEntity<?> getAllJournalEntriesOfUser(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = SecurityUtil.getCurrentUsername();
         User user=userService.findByUserName(username);
         List<JournalEntry> all = user.getJournalEntries();
         if(all!=null && !all.isEmpty()){
@@ -65,11 +63,9 @@ public class JournalEntryController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(defaultValue = "desc") String sort) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         try {
             List<JournalEntry> entries = journalSearchService.searchJournalEntries(
-                    authentication.getName(), title, sentiment, startDate, endDate, sort
+                    SecurityUtil.getCurrentUsername(), title, sentiment, startDate, endDate, sort
             );
             return ResponseEntity.ok(entries);
         } catch (IllegalArgumentException exception) {
@@ -85,8 +81,7 @@ public class JournalEntryController {
     @PostMapping
     public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry){ //requestbody ka kaam hai data(from body) ko object mei convert karna
        try{
-           Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-           String username = authentication.getName();
+           String username = SecurityUtil.getCurrentUsername();
            journalEntryService.saveEntry(myEntry, username);
            return new ResponseEntity<>(HttpStatus.CREATED);
        }catch(Exception e){
@@ -103,8 +98,7 @@ public class JournalEntryController {
     @GetMapping("id/{myId}")
     public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable String myId){
         ObjectId id = new ObjectId(myId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = SecurityUtil.getCurrentUsername();
         User user=userService.findByUserName(username);
         List<JournalEntry> collect=user.getJournalEntries().stream().filter(entry->entry.getId().equals(id)).collect(Collectors.toList());
         if(!collect.isEmpty()) {
@@ -123,8 +117,7 @@ public class JournalEntryController {
     )
     @DeleteMapping("id/{myId}")
     public ResponseEntity<? > deleteJournalEntryById(@PathVariable ObjectId myId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = SecurityUtil.getCurrentUsername();
         boolean removed=journalEntryService.deleteById(myId,username);
         if(removed){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -140,8 +133,7 @@ public class JournalEntryController {
     )
     @PutMapping("id/{myId}")
     public ResponseEntity<JournalEntry> updateJournalById(@PathVariable ObjectId myId, @RequestBody JournalEntry newEntry) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = SecurityUtil.getCurrentUsername();
         User user=userService.findByUserName(username);
         List<JournalEntry> collect=user.getJournalEntries().stream().filter(entry->entry.getId().equals(myId)).collect(Collectors.toList());
         if(!collect.isEmpty()) {
