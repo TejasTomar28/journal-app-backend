@@ -54,7 +54,7 @@ public class DashboardService {
                 .build();
     }
 
-    private int calculateCurrentStreak(List<JournalEntry> entries) {
+    public int calculateCurrentStreak(List<JournalEntry> entries) {
         if (entries == null || entries.isEmpty()) {
             return 0;
         }
