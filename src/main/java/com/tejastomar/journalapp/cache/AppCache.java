@@ -14,7 +14,12 @@ import java.util.Map;
 public class AppCache {
 
     public enum Keys{
-        WEATHER_API;
+        WEATHER_API,
+        OPENAI_MODEL,
+        OPENAI_BASE_URL,
+        OPENAI_TEMPERATURE,
+        OPENAI_MAX_TOKENS,
+        AI_SYSTEM_PROMPT;
     }
 
     @Autowired

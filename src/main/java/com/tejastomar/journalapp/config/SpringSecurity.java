@@ -30,7 +30,7 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/journal/**", "/user/**", "/dashboard/**", "/analytics/**", "/reflection/today").authenticated()
+                .antMatchers("/journal/**", "/user/**", "/dashboard/**", "/analytics/**", "/reflection/today", "/ai/**").authenticated()
                 .antMatchers("/admin/**", "/reflection/**").hasRole("ADMIN")
                 .anyRequest().permitAll(); //allow all other requests without authentication 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
