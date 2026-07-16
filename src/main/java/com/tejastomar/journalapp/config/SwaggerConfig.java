@@ -32,7 +32,8 @@ public class SwaggerConfig {
                         new Tag().name("User APIs"),
                         new Tag().name("Journal APIs"),
                         new Tag().name("Admin APIs"),
-                        new Tag().name("Analytics APIs")
+                        new Tag().name("Analytics APIs"),
+                        new Tag().name("Reflection Prompt APIs")
                 ))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components().addSecuritySchemes(
