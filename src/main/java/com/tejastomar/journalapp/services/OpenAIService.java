@@ -32,15 +32,40 @@ public class OpenAIService {
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(buildRequestBody(systemPrompt, journalPrompt), headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    getChatCompletionsUrl(), HttpMethod.POST, request, String.class
-            );
-            if (response.getBody() == null) {
-                throw new OpenAIServiceException("OpenAI returned an empty response");
-            }
+
+            System.out.println("========== REQUEST BODY ==========");
+            System.out.println(buildRequestBody(systemPrompt, journalPrompt));
+            System.out.println("==================================");
+
+            ResponseEntity<String> response =
+                    restTemplate.exchange(
+                            getChatCompletionsUrl(),
+                            HttpMethod.POST,
+                            request,
+                            String.class
+                    );
+
+            System.out.println("HTTP STATUS = " + response.getStatusCode());
+
+            System.out.println(response.getBody());
+
             return response.getBody();
-        } catch (RestClientException exception) {
-            throw new OpenAIServiceException("OpenAI request failed", exception);
+
+        }
+        catch (RestClientException exception) {
+
+            System.out.println("========== OPENAI ERROR ==========");
+            System.out.println(exception.getClass().getName());
+            System.out.println(exception.getMessage());
+
+            exception.printStackTrace();
+
+            System.out.println("==================================");
+
+            throw new OpenAIServiceException(
+                    "OpenAI request failed",
+                    exception
+            );
         }
     }
 

@@ -94,10 +94,13 @@ public class AIInsightService {
     }
 
     private AIInsight generateAndParseInsight(String username, JournalEntry journalEntry) {
+        System.out.println("STEP 1 : Building Prompt");
         String prompt = buildPrompt(journalEntry);
-
+        System.out.println("STEP 2 : Calling OpenAI");
         try {
             String rawResponse = openAIService.sendPrompt(aiConfigurationService.getSystemPrompt(), prompt);
+            System.out.println("STEP 3 : Response received");
+            System.out.println(rawResponse);
             return parseInsight(rawResponse, journalEntry.getId(), username);
         } catch (OpenAIServiceException exception) {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "OpenAI request failed", exception);
