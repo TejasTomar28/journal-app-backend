@@ -377,17 +377,27 @@ Protected APIs
 
 - Swagger UI
 <img width="740" height="1466" alt="image" src="https://github.com/user-attachments/assets/56db55d6-b06c-4537-8e53-bf74ec655356" />
+
 - MongoDB Atlas
 <img width="2940" height="1604" alt="image" src="https://github.com/user-attachments/assets/38698bca-6bc6-44fc-a3dd-c770d4180885" />
+
 - Redis Dashboard
 <img width="2940" height="1608" alt="image" src="https://github.com/user-attachments/assets/13bce3f5-8a10-454a-8a28-5525e8912500" />
+
 - Weekly Reflection Email
-<img width="2540" height="1586" alt="image" src="https://github.com/user-attachments/assets/8089b48e-94f9-40f4-8e6d-40338538c779" />
-- Dashboard
-<img width="2556" height="1602" alt="image" src="https://github.com/user-attachments/assets/e8e36803-234c-4f4e-8ca1-3006669495a3" />
+<img width="2788" height="1616" alt="image" src="https://github.com/user-attachments/assets/ea2f2f88-5a0d-410d-a861-be75b2bbe491" />
+
 - AI Insight Response
+<img width="2556" height="1602" alt="image" src="https://github.com/user-attachments/assets/e8e36803-234c-4f4e-8ca1-3006669495a3" />
+
+- Dashboard
 <img width="2546" height="1594" alt="image" src="https://github.com/user-attachments/assets/18eacd4f-7cfe-42fc-b6a3-a3d962b4b911" />
+
+-Weekly Analyctics
 <img width="2562" height="1598" alt="image" src="https://github.com/user-attachments/assets/9990f714-f656-485c-99b9-8442693385dc" />
+
+-Kafka
+<img width="2048" height="1264" alt="image" src="https://github.com/user-attachments/assets/08980f4f-2b9e-4c9e-8956-552a4d50c941" />
 
 
 ---
